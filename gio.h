@@ -15,10 +15,11 @@ struct ReadWriter {
 };
 
 ReadWriter* getrdstruct(int);
+int gio_init(int);
+int gio_free(void);
 int gopen(ReadWriter*, void*);
 int gclose(int);
 long gread(int, void*, long, vlong);
 long gwrite(int, void*, long, vlong);
 vlong gseek(int, vlong, int);
 int fd2gio(int);
-

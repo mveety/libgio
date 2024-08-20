@@ -2,6 +2,8 @@
 #include <libc.h>
 #include <gio.h>
 
+extern int gio_maxfile;
+
 int topen(ReadWriter*);
 int tclose(ReadWriter*);
 long tread(ReadWriter*, void*, long, vlong);
@@ -17,6 +19,12 @@ ReadWriter tester = {
 void
 main(int argc, char *argv[])
 {
+	if(gio_init(256)){
+		print("gio_test: failed to allocate fd table: gio_maxfile = %d\n", gio_maxfile);
+		exits("failed to allocate fd table");
+	}
+
+	print("gio_test: gio_maxfile = %d\n", gio_maxfile);
 	int gfd = gopen(&tester, nil);
 	if(gfd < 0){
 		print("gio_test: failed to open gio fd\n");

@@ -1,6 +1,6 @@
 .TH GIO 2
 .SH NAME
-gopen, gclose, gseek, gread, gwrite, fd2gio \- Programmable streams
+gio_init, gio_free, gopen, gclose, gseek, gread, gwrite, fd2gio \- Programmable streams
 .SH SYNOPSIS
 .B #include <u.h>
 .br
@@ -23,6 +23,12 @@ typedef struct ReadWriter {
 .fi
 .PP
 .B
+int gio_init(int maxfile)
+.PP
+.B
+int gio_free(void)
+.PP
+.B
 int gopen(ReadWriter *r, void *aux)
 .PP
 .B
@@ -40,6 +46,11 @@ long gwrite(int gfd, void *buf, long nbytes, vlong offset)
 .B
 int fd2gio(int fd)
 .SH DESCRIPTION
+.I gio_init
+initializes the libgio file descriptor table sizing it to
+.I maxfiles.
+.I gio_free
+attempts to close all open files in the table and then frees the resources used by libgio.
 .I gopen
 takes a ReadWriter struct and creates a new instance of a gio fd.
 .I aux
@@ -73,6 +84,11 @@ The file descriptor table is poorly implemented.
 .br
 You cannot easily mix gio file descriptors with functions that want Plan 9 ones.
 .br
+There is only one file descriptor table.
+.br
+.I gseek
+isn't really used by the library.
+.br
 
 .SH SEE ALSO
 .IR read (2),
@@ -87,7 +103,11 @@ and
 .I gread,
 and
 .I gwrite
-will return -2 if a function pointer is nil.
+will return -2 if a function pointer is nil, and
+.I gio_init
+and
+.I gio_free
+will return -1 if something bad happens.
 .SH HISTORY
 First appeared as part of
 .IR ngfs (8)

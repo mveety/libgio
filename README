@@ -35,6 +35,12 @@ Usage struct ReadWriter {
 	offset; u64int length;
 };
 
+int gio_init(int maxfile)
+	This initializes the file descriptor table.
+
+int gio_free(void)
+	This attempts to close all files and then frees the file descriptor table.
+
 int gopen(ReadWriter*, void *aux)
 	This function takes a ReadWriter struct and auxillary data, and
 	creates a gio file descriptor.
